@@ -1,6 +1,7 @@
 package com.example.rxjavapractice
 
 import android.os.Bundle
+import android.util.Log
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -10,8 +11,15 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
 import com.example.rxjavapractice.databinding.ActivityMainBinding
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Observer
+import io.reactivex.rxjava3.disposables.Disposable
 
 class MainActivity : AppCompatActivity() {
+
+    companion object {
+        const val TAG = "Main Activity"
+    }
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
@@ -32,7 +40,54 @@ class MainActivity : AppCompatActivity() {
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
+//        justOperator()
+//        fromOperator()
+//        fromIterableOperator()
+//
+//        rangeOperator().subscribe({
+//            Log.d(MainActivity.TAG, "onNext: $it")
+//        }, {
+//            Log.d(MainActivity.TAG, "onError: ${it.toString()}")
+//        }, {
+//            Log.d(MainActivity.TAG, "onComplete")
+//        })
+//
+//        repeatOperator().subscribe({
+//            Log.d(MainActivity.TAG, "onNext: $it")
+//        }, {
+//            Log.d(MainActivity.TAG, "onError: ${it.toString()}")
+//        }, {
+//            Log.d(MainActivity.TAG, "onComplete")
+//        })
+//
+//        intervalOperator().subscribe({
+//            Log.d(MainActivity.TAG, "onNext: $it")
+//            callYoung()
+//        }, {
+//            Log.d(MainActivity.TAG, "onError: ${it.toString()}")
+//        }, {
+//            Log.d(MainActivity.TAG, "onComplete")
+//        })
+//
+//        timerOperator().subscribe({
+//            Log.d(MainActivity.TAG, "onNext: $it")
+//            callYoung()
+//        }, {
+//            Log.d(MainActivity.TAG, "onError: ${it.toString()}")
+//        }, {
+//            Log.d(MainActivity.TAG, "onComplete")
+//        })
+
+        createOperator().subscribe({
+            Log.d(MainActivity.TAG, "onNext: $it")
+            callYoung()
+        }, {
+            Log.d(MainActivity.TAG, "onError: ${it.toString()}")
+        }, {
+            Log.d(MainActivity.TAG, "onComplete")
+        })
     }
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -55,4 +110,10 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
     }
+
+    private fun callYoung() {
+        Log.d(TAG, "Young!")
+    }
+
+
 }
