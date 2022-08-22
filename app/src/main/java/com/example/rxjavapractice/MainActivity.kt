@@ -212,25 +212,74 @@ class MainActivity : AppCompatActivity() {
             Log.d(MainActivity.TAG, "onComplete")
         })*/
 
+        /*// to observable
         groupByOperator()
             .groupBy {
                 it.age
             }
+
+            .filter{
+                it.key ==12
+            }
             .subscribe({ group ->
-                       group.subscribe({
-                           Log.d(MainActivity.TAG, "onNext: $it")
-                       },{
-                           Log.d(MainActivity.TAG, "onError: ${it.toString()}")
-                       })
-//            Log.d(MainActivity.TAG, "onNext: $it")
+                group.subscribe({
+                    Log.d(MainActivity.TAG, "Key: ${group.key} - value: $it")
+                }, {
+                    Log.d(MainActivity.TAG, "onError: ${it.toString()}")
+                })
+            }, {
+                Log.d(MainActivity.TAG, "onError: ${it.toString()}")
+            }, {
+                Log.d(MainActivity.TAG, "onComplete")
+            })*/
+
+        /*// to mutableList
+
+        groupByOperator()
+            .groupBy{
+                it.age
+            }
+            .flatMapSingle{ group ->
+                group.toList()
+
+            }
+            .subscribe({
+                Log.d(MainActivity.TAG, "onNext: $it")
+            }, {
+                Log.d(MainActivity.TAG, "onError: ${it.toString()}")
+            }, {
+                Log.d(MainActivity.TAG, "onComplete")
+            })*/
+
+       /* mergeOperator()
+            .subscribe({
+            Log.d(MainActivity.TAG, "onNext: $it")
         }, {
             Log.d(MainActivity.TAG, "onError: ${it.toString()}")
         }, {
             Log.d(MainActivity.TAG, "onComplete")
-        })
+        })*/
 
+        /*concatOperator()
+            .subscribe({
+                Log.d(MainActivity.TAG, "onNext: $it")
+            }, {
+                Log.d(MainActivity.TAG, "onError: ${it.toString()}")
+            }, {
+                Log.d(MainActivity.TAG, "onComplete")
+            })*/
+        zipOperator()
+            .subscribe({
+                it.forEach {
+                    Log.d(MainActivity.TAG, "onNext: $it")
+                }
+                Log.d(MainActivity.TAG, "onNext: $it")
+            }, {
+                Log.d(MainActivity.TAG, "onError: ${it.toString()}")
+            }, {
+                Log.d(MainActivity.TAG, "onComplete")
+            })
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.

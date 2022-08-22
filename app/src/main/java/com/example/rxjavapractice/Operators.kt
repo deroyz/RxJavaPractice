@@ -1,12 +1,15 @@
 package com.example.rxjavapractice
 
 import android.util.Log
+import com.example.rxjavapractice.data.Blog
+import com.example.rxjavapractice.data.BlogDetail
 import com.example.rxjavapractice.data.User
 import com.example.rxjavapractice.data.UserProfile
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.ObservableOnSubscribe
 import io.reactivex.rxjava3.core.Observer
 import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.functions.BiFunction
 import java.lang.Exception
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -14,6 +17,7 @@ import java.util.concurrent.TimeUnit
 val mNumList = mutableListOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
 val arraysNum1 = arrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
 val arraysNum2 = arrayOf(10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120)
+
 val mUserList = mutableListOf<User>(
     User(1, "demo1", 12),
     User(2, "demo2", 15),
@@ -37,6 +41,20 @@ val mUserProfileList = mutableListOf<UserProfile>(
     UserProfile(9, "demo9", 16, "https://test.com/9"),
 )
 val mEmptyUserList = mutableListOf<User>()
+
+val mBlogList = mutableListOf<Blog>(
+    Blog(1, 2, "title1", "content1"),
+    Blog(2, 3, "title2", "content2"),
+    Blog(3, 4, "title2", "content2"),
+    Blog(4, 9, "title1", "content1"),
+    Blog(5, 10, "title3", "content3"),
+    Blog(6, 11, "title1", "content1"),
+    Blog(7, 3, "title3", "content3"),
+    Blog(8, 2, "title1", "content1"),
+    Blog(9, 6, "title4", "content4"),
+    Blog(10, 13, "title1", "content1"),
+    Blog(11, 1, "title4", "content4"),
+)
 
 
 fun justOperator() {
@@ -175,18 +193,68 @@ fun flatMapOperator(): Observable<User> {
     return Observable.fromIterable(mUserList)
 }
 
-fun getUserProfile(id: Long): Observable<UserProfile> {
+fun getUserProfileById(id: Long): Observable<UserProfile> {
     return Observable.fromIterable(mUserProfileList)
         .filter {
             it.id == id
         }
 }
 
-fun flatMapOperatorT2(): Observable<List<User>>{
+fun flatMapOperatorT2(): Observable<List<User>> {
     return Observable.just(mUserList)
 }
 
-fun groupByOperator(): Observable<User>{
+fun groupByOperator(): Observable<User> {
     return Observable.fromIterable(mUserList)
 }
 
+fun getUser(): Observable<User> {
+    return Observable.fromIterable(mUserList)
+}
+
+fun getUserProfile(): Observable<UserProfile> {
+    return Observable.fromIterable(mUserProfileList)
+}
+
+fun mergeOperator(): Observable<Any> {
+    return Observable.merge(getUser(), getUserProfile())
+}
+
+fun getNum1To100(): Observable<Int> {
+    return Observable.range(1, 100)
+}
+
+fun getNum100To200(): Observable<Int> {
+    return Observable.range(100, 200)
+}
+
+fun concatOperator(): Observable<Int> {
+    return Observable.concat(getNum1To100(), getNum100To200())
+}
+
+fun getBlogs(): Observable<List<Blog>> {
+    return Observable.just(mBlogList)
+}
+
+fun getUsers(): Observable<List<User>> {
+    return Observable.just(mUserList)
+}
+
+fun zipOperator(): Observable<List<BlogDetail>> {
+
+    return Observable.zip(getUsers(), getBlogs(), BiFunction { t1, t2 -> blogDetail(t1, t2) })
+}
+
+fun blogDetail(t1: List<User>, t2: List<Blog>): List<BlogDetail> {
+    val listBlogDetail: MutableList<BlogDetail> = emptyList<BlogDetail>().toMutableList()
+    t1.forEach { user ->
+        t2.forEach { blog ->
+            if (blog.userId == user.id) {
+                listBlogDetail.add(
+                    BlogDetail(blog.id, blog.userId, blog.title, blog.content, user)
+                )
+            }
+        }
+    }
+    return listBlogDetail
+}
