@@ -268,7 +268,8 @@ class MainActivity : AppCompatActivity() {
             }, {
                 Log.d(MainActivity.TAG, "onComplete")
             })*/
-        zipOperator()
+
+        /*zipOperator()
             .subscribe({
                 it.forEach {
                     Log.d(MainActivity.TAG, "onNext: $it")
@@ -278,7 +279,9 @@ class MainActivity : AppCompatActivity() {
                 Log.d(MainActivity.TAG, "onError: ${it.toString()}")
             }, {
                 Log.d(MainActivity.TAG, "onComplete")
-            })
+            })*/
+
+        createObservable().subscribe(observer())
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
