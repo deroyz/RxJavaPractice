@@ -38,6 +38,7 @@ class MainActivity : AppCompatActivity() {
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
+
         /*justOperator()*/
 
         /*fromOperator()*/
@@ -251,7 +252,7 @@ class MainActivity : AppCompatActivity() {
                 Log.d(MainActivity.TAG, "onComplete")
             })*/
 
-       /* mergeOperator()
+        /* mergeOperator()
             .subscribe({
             Log.d(MainActivity.TAG, "onNext: $it")
         }, {
